@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
+    <menu id="dashboard" icon="DASHBOARD">
+        <item screen="dashboard$PersistentDashboard.browse"/>
+        <item screen="dashboard$WidgetTemplate.browse"/>
+    </menu>
+    <menu id="Directory" caption="mainMsg://menu_config.application-untitled" icon="font-icon:BOOK">
+        <item screen="untitled_BusinessDirection.browse"
+              caption="mainMsg://menu_config.untitled_BusinessDirection.browse"/>
+        <item screen="untitled_Company.browse" caption="mainMsg://menu_config.untitled_Company.browse"/>
+        <item screen="untitled_Currency.browse" caption="mainMsg://menu_config.untitled_Currency.browse"/>
+    </menu>
+    <menu id="Documents" caption="mainMsg://menu_config.Documents" icon="font-icon:SUITCASE">
+        <item screen="untitled_ForecastBN.browse" caption="mainMsg://menu_config.untitled_ForecastBN.browse"/>
+    </menu>
+    <menu id="administration" icon="GEARS">
+        <item id="sec$User.browse"/>
+        <item id="sec$Group.browse"/>
+        <item id="sec$Role.browse"/>
+        <separator/>
+        <item id="sec$UserSessionEntity.browse"/>
+        <item id="sys$LockInfo.browse"/>
+        <item id="sys$ScheduledTask.browse"/>
+        <item id="entityRestore"/>
+        <item id="appProperties"/>
+        <separator/>
+        <item id="entityLog"/>
+        <item id="sec$SessionLogEntry.browse"/>
+        <item id="sys$SendingMessage.browse"/>
+        <item id="serverLog"/>
+        <item id="screenProfiler"/>
+        <item id="performanceStatistics"/>
+    </menu>
+    <menu id="help" icon="QUESTION_CIRCLE_O">
+        <item id="settings"/>
+        <item screen="helium_ThemeSettingsScreen"/>
+    </menu>
+</menu-config>
