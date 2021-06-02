@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://forecastBNEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.untitled.web.screens.forecastbn">
+    <data>
+        <instance id="forecastBNDc"
+                  class="com.company.untitled.entity.ForecastBN">
+            <view extends="_local">
+                <property name="businessDirection" fetch="AUTO" view="_minimal"/>
+                <property name="forecastDetail" fetch="AUTO" view="_local">
+                    <property name="company" fetch="AUTO" view="_minimal"/>
+                    <property name="currency" fetch="AUTO" view="_minimal"/>
+                </property>
+            </view>
+            <loader/>
+            <collection id="forecastDetailDc" property="forecastDetail"/>
+        </instance>
+        <collection id="businessDirectionsDc" class="com.company.untitled.entity.BusinessDirection" view="_minimal">
+            <loader id="businessDirectionsDl">
+                <query>
+                    <![CDATA[select e from untitled_BusinessDirection e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="forecastDetailBox" spacing="true">
+        <form id="form" dataContainer="forecastBNDc">
+            <column width="350px">
+                <lookupPickerField id="businessDirectionField" optionsContainer="businessDirectionsDc"
+                                   property="businessDirection">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="open" type="picker_open"/>
+                    </actions>
+                </lookupPickerField>
+            </column>
+            <column>
+                <dateField id="balanceDateField" property="balanceDate"/>
+            </column>
+            <column>
+                <checkBox id="activeCheckBox" property="active"/>
+            </column>
+        </form>
+
+        <groupBox id="forecastDetailBox" caption="msg://com.company.untitled.entity/ForecastBN.forecastDetail">
+            <dataGrid id="dataGrid" dataContainer="forecastDetailDc" editorEnabled="true" frozenColumnCount="4" aggregatable="true"
+                      width="100%" reorderingAllowed="false" sortable="false" settingsEnabled="false"
+                      textSelectionEnabled="true" columnsCollapsingAllowed="false">
+                <actions>
+                    <action id="create" type="create"/>
+                    <action id="edit" type="edit"/>
+                    <action id="remove" type="remove"/>
+                </actions>
+                <buttonsPanel id="buttonsPanel"
+                              alwaysVisible="true">
+                    <button id="createBtn" action="dataGrid.create"/>
+                    <button id="editBtn" action="dataGrid.edit"/>
+                    <button id="removeBtn" action="dataGrid.remove"/>
+                </buttonsPanel>
+                <columns>
+
+                    <column id="company" property="company"/>
+                    <column id="typeCash" property="typeCash"/>
+                    <column id="currency" property="currency">
+                    </column>
+                    <column id="balance" property="balance" caption="msg://balance.caption"/>
+
+                    <column id="inSumm1" property="inSumm1">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="outSumm1" property="outSumm1">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="forecastSumm1" property="forecastSumm1" editable="false">
+                        <aggregation type="SUM"/>
+                    </column>
+
+                    <column id="inSumm2" property="inSumm2">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="outSumm2" property="outSumm2">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="forecastSumm2" property="forecastSumm2" editable="false">
+                        <aggregation type="SUM"/>
+                    </column>
+
+                    <column id="inSumm3" property="inSumm3">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="outSumm3" property="outSumm3">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="forecastSumm3" property="forecastSumm3" editable="false">
+                        <aggregation type="SUM"/>
+                    </column>
+
+                    <column id="inSumm4" property="inSumm4">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="outSumm4" property="outSumm4">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="forecastSumm4" property="forecastSumm4" editable="false">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="inSumm5" property="inSumm5">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="outSumm5" property="outSumm5">
+                        <aggregation type="SUM"/>
+                    </column>
+                    <column id="forecastSumm5" property="forecastSumm5" editable="false">
+                        <aggregation type="SUM"/>
+                    </column>
+                </columns>
+                <rowsCount/>
+            </dataGrid>
+        </groupBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
