@@ -9,5 +9,8 @@
         <class>com.company.untitled.entity.ForecastBNDetail</class>
         <class>com.company.untitled.entity.Forecast</class>
         <class>com.company.untitled.entity.ForecastCurrencyBalance</class>
+        <class>com.company.untitled.entity.ForecastBNBalance</class>
+        <class>com.company.untitled.entity.ForecastCompanyBalance</class>
+        <class>com.company.untitled.entity.CurrencyRate</class>
     </persistence-unit>
 </persistence>

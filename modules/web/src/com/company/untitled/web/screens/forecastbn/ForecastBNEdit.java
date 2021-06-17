@@ -15,6 +15,10 @@ import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +48,7 @@ public class ForecastBNEdit extends StandardEditor<ForecastBN> {
 
     private void initHeader() {
         DataGrid.HeaderRow headerRow = dataGrid.prependHeaderRow();
+
         DataGrid.HeaderCell headerCell = headerRow.join("inSumm1", "outSumm1", "forecastSumm1");
         headerCell.setText("Понедельник");
         headerCell.setStyleName("center-bold");
@@ -67,12 +72,10 @@ public class ForecastBNEdit extends StandardEditor<ForecastBN> {
 
     @Subscribe(id = "forecastDetailDc", target = Target.DATA_CONTAINER)
     public void onForecastDetailDcItemPropertyChange(InstanceContainer.ItemPropertyChangeEvent<ForecastBNDetail> event) {
-//        forecastBNDc.getItem().setActive(false);
         calcForecast(event.getItem());
     }
 
     private void calcForecast(ForecastBNDetail element) {
-        //ForecastBNDetail element = forecastDetailDc.getItem();
         if (element.getBalance()!=null && element.getInSumm1()!= null && element.getOutSumm1()!=null) {
             element.setForecastSumm1(element.getBalance() + element.getInSumm1() - element.getOutSumm1());
         }
@@ -93,9 +96,6 @@ public class ForecastBNEdit extends StandardEditor<ForecastBN> {
     @Subscribe("dataGrid.create")
     public void onDataGridCreate(Action.ActionPerformedEvent event) {
         if (dataGrid.isEditorActive()) {
-            notifications.create()
-                    .withCaption("Close the editor before creating a new entity")
-                    .show();
             return;
         }
         ForecastBNDetail forecastBNDetail = addForecastDetailItem(null);
@@ -108,10 +108,10 @@ public class ForecastBNEdit extends StandardEditor<ForecastBN> {
 
         ForecastBNDetail forecastBNDetail = metadata.create(ForecastBNDetail.class);
         forecastBNDetail.setForecastBN(forecastBNDc.getItem());
-        forecastBNDetail.setForecastBN(forecastBNDc.getItem());
         forecastBNDetail.setCompany(company);
         forecastBNDetail.setTypeCash(CashType.ACC);
         forecastBNDetail.setCurrency(currency);
+        forecastBNDetail.setBalance(0.);
         forecastBNDetail.setForecastSumm1(0.);
         forecastBNDetail.setForecastSumm2(0.);
         forecastBNDetail.setForecastSumm3(0.);
@@ -145,14 +145,10 @@ public class ForecastBNEdit extends StandardEditor<ForecastBN> {
         if (event.getProperty().equals("businessDirection")) {
             initForecastDetailByBN();
         }
-        if (event.getProperty().equals("forecastDetail") || event.getProperty().equals("balanceDate")) {
-            forecastBNDc.getItem().setActive(false);
-        }
     }
 
     private void initForecastDetailByBN() {
-        forecastDetailDc.getMutableItems().clear();
-        forecastBNDc.getItem().getForecastDetail().clear();
+        //forecastBNDc.getItem().getForecastDetail().clear();
         BusinessDirection businessDirectionId = forecastBNDc.getItem().getBusinessDirection();
         LoadContext<Company> loadContext = LoadContext.create(Company.class)
                 .setQuery(LoadContext.createQuery("select e from untitled_Company e" +
@@ -165,5 +161,14 @@ public class ForecastBNEdit extends StandardEditor<ForecastBN> {
         for(Company item:companyList){
             addForecastDetailItem(item);
         }
+    }
+
+    @Subscribe("dataGrid.edit")
+    public void onDataGridEdit(Action.ActionPerformedEvent event) {
+        if (dataGrid.isEditorActive()) {
+            return;
+        }
+        ForecastBNDetail forecastBNDetail = forecastDetailDc.getItem();
+        dataGrid.edit(forecastBNDetail);
     }
 }

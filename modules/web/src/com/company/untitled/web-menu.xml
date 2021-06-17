@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
-    <menu id="dashboard" icon="DASHBOARD">
-        <item screen="dashboard$PersistentDashboard.browse"/>
-        <item screen="dashboard$WidgetTemplate.browse"/>
-    </menu>
     <menu id="Directory" caption="mainMsg://menu_config.application-untitled" icon="font-icon:BOOK">
         <item screen="untitled_BusinessDirection.browse"
               caption="mainMsg://menu_config.untitled_BusinessDirection.browse"/>
@@ -12,6 +8,7 @@
     </menu>
     <menu id="Documents" caption="mainMsg://menu_config.Documents" icon="font-icon:SUITCASE">
         <item screen="untitled_ForecastBN.browse" caption="mainMsg://menu_config.untitled_ForecastBN.browse"/>
+        <item screen="untitled_Forecast.browse" caption="mainMsg://menu_config.untitled_Forecast.browse"/>
     </menu>
     <menu id="administration" icon="GEARS">
         <item id="sec$User.browse"/>

@@ -5,16 +5,18 @@ import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-@Table(name = "UNTITLED_FORECAST_CURRENCY_BALANCE")
-@Entity(name = "untitled_ForecastCurrencyBalance")
-public class ForecastCurrencyBalance extends StandardEntity {
-    private static final long serialVersionUID = 5838031289318463073L;
+@Table(name = "UNTITLED_FORECAST_BN_BALANCE")
+@Entity(name = "untitled_ForecastBNBalance")
+public class ForecastBNBalance extends StandardEntity {
+    private static final long serialVersionUID = -9095460557564611791L;
 
-    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open"})
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CURRENCY_ID")
-    private Currency currency;
+    @JoinColumn(name = "BUSINESS_DIRECTION_ID")
+    @NotNull
+    private BusinessDirection businessDirection;
 
     @Column(name = "BALANCE")
     private Double balance;
@@ -74,6 +76,14 @@ public class ForecastCurrencyBalance extends StandardEntity {
 
     public Double getInSumm3() {
         return inSumm3;
+    }
+
+    public BusinessDirection getBusinessDirection() {
+        return businessDirection;
+    }
+
+    public void setBusinessDirection(BusinessDirection businessDirection) {
+        this.businessDirection = businessDirection;
     }
 
     public Double getForecastSumm5() {
@@ -204,11 +214,4 @@ public class ForecastCurrencyBalance extends StandardEntity {
         this.balance = balance;
     }
 
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
 }

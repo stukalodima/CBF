@@ -7,5 +7,14 @@
     <context:component-scan base-package="com.company.untitled"/>
     
     <gui:screens base-packages="com.company.untitled.web"/>
+    <bean id="untitled_proxyCreator" class="com.haulmont.cuba.web.sys.remoting.WebRemoteProxyBeanCreator">
+        <property name="serverSelector" ref="cuba_ServerSelector"/>
+        <property name="remoteServices">
+            <map>
+                <entry key="untitled_ForecastBNCreatorService"
+                       value="com.company.untitled.service.ForecastBNCreatorService"/>
+            </map>
+        </property>
+    </bean>
 
 </beans>

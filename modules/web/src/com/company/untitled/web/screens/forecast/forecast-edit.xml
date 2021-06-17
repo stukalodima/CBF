@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://forecastEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.untitled.web.screens.forecast">
+    <data>
+        <instance id="forecastDc"
+                  class="com.company.untitled.entity.Forecast">
+            <view extends="_local">
+                <property name="balanceBNTable" fetch="AUTO" view="_local">
+                    <property name="businessDirection" view="_minimal"/>
+                </property>
+                <property name="balanceCompanyTable" fetch="AUTO" view="_minimal">
+                    <property name="company" view="_minimal"/>
+                    <property name="typeCash"/>
+                    <property name="currency" view="_minimal"/>
+                    <property name="balance"/>
+                    <property name="inSumm1"/>
+                    <property name="inSumm2"/>
+                    <property name="inSumm3"/>
+                    <property name="inSumm4"/>
+                    <property name="inSumm5"/>
+                    <property name="outSumm1"/>
+                    <property name="outSumm2"/>
+                    <property name="outSumm3"/>
+                    <property name="outSumm4"/>
+                    <property name="outSumm5"/>
+                    <property name="forecastSumm1"/>
+                    <property name="forecastSumm2"/>
+                    <property name="forecastSumm3"/>
+                    <property name="forecastSumm4"/>
+                    <property name="forecastSumm5"/>
+                </property>
+                <property name="balanceCurrencyTable" fetch="AUTO" view="_minimal">
+                    <property name="currency" view="_minimal"/>
+                    <property name="balance"/>
+                    <property name="inSumm1"/>
+                    <property name="inSumm2"/>
+                    <property name="inSumm3"/>
+                    <property name="inSumm4"/>
+                    <property name="inSumm5"/>
+                    <property name="outSumm1"/>
+                    <property name="outSumm2"/>
+                    <property name="outSumm3"/>
+                    <property name="outSumm4"/>
+                    <property name="outSumm5"/>
+                    <property name="forecastSumm1"/>
+                    <property name="forecastSumm2"/>
+                    <property name="forecastSumm3"/>
+                    <property name="forecastSumm4"/>
+                    <property name="forecastSumm5"/>
+                </property>
+            </view>
+            <loader/>
+            <collection id="balanceBNTableDc" property="balanceBNTable"/>
+            <collection id="balanceCompanyTableDc" property="balanceCompanyTable"/>
+            <collection id="balanceCurrencyTableDc" property="balanceCurrencyTable"/>
+        </instance>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="balanceBNTableBox" spacing="true">
+        <form id="form" dataContainer="forecastDc">
+            <column width="350px">
+                <textField id="porogField" property="porog"/>
+                <dateField id="balanceDateField" property="balanceDate"/>
+            </column>
+        </form>
+        <groupBox id="balanceBNTableBox"
+                  expand="tabSheat">
+            <tabSheet id="tabSheat">
+                <tab id="tabCurrence" expand="balanceCurrencyTableBox" caption="msg://tabCurrence.caption">
+
+                    <groupBox id="balanceCurrencyTableBox"
+                    >
+                        <dataGrid id="balanceCurrencyTableTable" dataContainer="balanceCurrencyTableDc" width="100%" height="100%"
+                                  editorEnabled="true">
+                            <actions>
+                                <action id="create" type="create"/>
+                                <action id="edit" type="edit"/>
+                                <action id="remove" type="remove"/>
+                            </actions>
+                            <columns>
+                                <column id="currency" property="currency"/>
+                                <column id="balance" property="balance"/>
+                                <column id="inSumm1" property="inSumm1"/>
+                                <column id="outSumm1" property="outSumm1"/>
+                                <column id="forecastSumm1" property="forecastSumm1"/>
+                                <column id="inSumm2" property="inSumm2"/>
+                                <column id="outSumm2" property="outSumm2"/>
+                                <column id="forecastSumm2" property="forecastSumm2"/>
+                                <column id="inSumm3" property="inSumm3"/>
+                                <column id="outSumm3" property="outSumm3"/>
+                                <column id="forecastSumm3" property="forecastSumm3"/>
+                                <column id="inSumm4" property="inSumm4"/>
+                                <column id="outSumm4" property="outSumm4"/>
+                                <column id="forecastSumm4" property="forecastSumm4"/>
+                                <column id="inSumm5" property="inSumm5"/>
+                                <column id="outSumm5" property="outSumm5"/>
+                                <column id="forecastSumm5" property="forecastSumm5"/>
+                            </columns>
+                            <buttonsPanel>
+                                <button action="balanceCurrencyTableTable.create"/>
+                                <button action="balanceCurrencyTableTable.edit"/>
+                                <button action="balanceCurrencyTableTable.remove"/>
+                            </buttonsPanel>
+                            <rowsCount/>
+                        </dataGrid>
+                    </groupBox>
+                </tab>
+                <tab id="tabBN" expand="balanceBNTableTable" caption="msg://tabBN.caption">
+
+                    <dataGrid id="balanceBNTableTable" dataContainer="balanceBNTableDc" width="100%" height="100%"
+                              aggregatable="true">
+                        <actions>
+                            <action id="create" type="create"/>
+                            <action id="edit" type="edit"/>
+                            <action id="remove" type="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="businessDirection" property="businessDirection"/>
+                            <column id="balance" property="balance">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="inSumm1" property="inSumm1">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="outSumm1" property="outSumm1">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="forecastSumm1" property="forecastSumm1">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="inSumm2" property="inSumm2">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="outSumm2" property="outSumm2">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="forecastSumm2" property="forecastSumm2">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="inSumm3" property="inSumm3">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="outSumm3" property="outSumm3">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="forecastSumm3" property="forecastSumm3">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="inSumm4" property="inSumm4">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="outSumm4" property="outSumm4">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="forecastSumm4" property="forecastSumm4">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="inSumm5" property="inSumm5">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="outSumm5" property="outSumm5">
+                                <aggregation type="SUM"/>
+                            </column>
+                            <column id="forecastSumm5" property="forecastSumm5">
+                                <aggregation type="SUM"/>
+                            </column>
+                        </columns>
+                        <buttonsPanel>
+                            <button action="balanceBNTableTable.create"/>
+                            <button action="balanceBNTableTable.edit"/>
+                            <button action="balanceBNTableTable.remove"/>
+                        </buttonsPanel>
+                    </dataGrid>
+                </tab>
+                <tab id="tabCompany" expand="balanceCompanyTableBox" caption="msg://tabCompany.caption">
+
+                    <groupBox id="balanceCompanyTableBox">
+                        <dataGrid id="balanceCompanyTableTable" dataContainer="balanceCompanyTableDc" width="100%" height="100%">
+                            <actions>
+                                <action id="create" type="create"/>
+                                <action id="edit" type="edit"/>
+                                <action id="remove" type="remove"/>
+                            </actions>
+                            <columns>
+                                <column id="company"/>
+                                <column id="typeCash"/>
+                                <column id="currency"/>
+                                <column id="balance"/>
+                                <column id="inSumm1"/>
+                                <column id="outSumm1"/>
+                                <column id="forecastSumm1"/>
+                                <column id="inSumm2"/>
+                                <column id="outSumm2"/>
+                                <column id="forecastSumm2"/>
+                                <column id="inSumm3"/>
+                                <column id="outSumm3"/>
+                                <column id="forecastSumm3"/>
+                                <column id="inSumm4"/>
+                                <column id="outSumm4"/>
+                                <column id="forecastSumm4"/>
+                                <column id="inSumm5"/>
+                                <column id="outSumm5"/>
+                                <column id="forecastSumm5"/>
+                            </columns>
+                            <buttonsPanel>
+                                <button action="balanceCompanyTableTable.create"/>
+                                <button action="balanceCompanyTableTable.edit"/>
+                                <button action="balanceCompanyTableTable.remove"/>
+                            </buttonsPanel>
+                        </dataGrid>
+                    </groupBox>
+                </tab>
+            </tabSheet>
+        </groupBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

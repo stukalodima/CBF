@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://forecastBrowse.caption"
+        focusComponent="forecastsTable"
+        messagesPack="com.company.untitled.web.screens.forecast">
+    <data readOnly="true">
+        <collection id="forecastsDc"
+                    class="com.company.untitled.entity.Forecast">
+            <view extends="_local">
+                <property name="balanceBNTable" fetch="AUTO" view="_local">
+                    <property name="businessDirection" view="_minimal"/>
+                </property>
+                <property name="balanceCompanyTable" fetch="AUTO" view="_minimal">
+                    <property name="company" view="_minimal"/>
+                    <property name="typeCash"/>
+                    <property name="currency" view="_minimal"/>
+                    <property name="balance"/>
+                    <property name="inSumm1"/>
+                    <property name="inSumm2"/>
+                    <property name="inSumm3"/>
+                    <property name="inSumm4"/>
+                    <property name="inSumm5"/>
+                    <property name="outSumm1"/>
+                    <property name="outSumm2"/>
+                    <property name="outSumm3"/>
+                    <property name="outSumm4"/>
+                    <property name="outSumm5"/>
+                    <property name="forecastSumm1"/>
+                    <property name="forecastSumm2"/>
+                    <property name="forecastSumm3"/>
+                    <property name="forecastSumm4"/>
+                    <property name="forecastSumm5"/>
+                </property>
+                <property name="balanceCurrencyTable" view="_minimal">
+                    <property name="currency" view="_minimal"/>
+                    <property name="balance"/>
+                    <property name="inSumm1"/>
+                    <property name="inSumm2"/>
+                    <property name="inSumm3"/>
+                    <property name="inSumm4"/>
+                    <property name="inSumm5"/>
+                    <property name="outSumm1"/>
+                    <property name="outSumm2"/>
+                    <property name="outSumm3"/>
+                    <property name="outSumm4"/>
+                    <property name="outSumm5"/>
+                    <property name="forecastSumm1"/>
+                    <property name="forecastSumm2"/>
+                    <property name="forecastSumm3"/>
+                    <property name="forecastSumm4"/>
+                    <property name="forecastSumm5"/>
+                </property>
+            </view>
+            <loader id="forecastsDl">
+                <query>
+                    <![CDATA[select e from untitled_Forecast e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="forecastsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="forecastsTable"
+                dataLoader="forecastsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="forecastsTable"
+                    width="100%"
+                    dataContainer="forecastsDc"
+                    presentations="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="refresh" type="refresh"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="porog"/>
+                <column id="balanceDate"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="forecastsTable.create"/>
+                <button id="editBtn" action="forecastsTable.edit"/>
+                <button id="removeBtn" action="forecastsTable.remove"/>
+                <button id="refreshBtn" action="forecastsTable.refresh"/>
+                <button id="excelBtn" action="forecastsTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

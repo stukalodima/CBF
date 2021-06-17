@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Table(name = "UNTITLED_FORECAST")
@@ -21,13 +22,48 @@ public class Forecast extends StandardEntity {
     @NotNull
     private Double porog;
 
+    @Column(name = "BALANCE_DATE")
+    @NotNull
+    private LocalDate balanceDate;
+
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "forecast")
+    private Collection<ForecastBNBalance> balanceBNTable;
+
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "forecast")
+    private Collection<ForecastCompanyBalance> balanceCompanyTable;
+
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "forecast")
     private Collection<ForecastCurrencyBalance> balanceCurrencyTable;
 
-    @Column(name = "BALANCE_IN_BASE_CURRENCY")
-    private Double balanceInBaseCurrency;
+    public Collection<ForecastCompanyBalance> getBalanceCompanyTable() {
+        return balanceCompanyTable;
+    }
+
+    public void setBalanceCompanyTable(Collection<ForecastCompanyBalance> balanceCompanyTable) {
+        this.balanceCompanyTable = balanceCompanyTable;
+    }
+
+    public Collection<ForecastBNBalance> getBalanceBNTable() {
+        return balanceBNTable;
+    }
+
+    public void setBalanceBNTable(Collection<ForecastBNBalance> balanceBNTable) {
+        this.balanceBNTable = balanceBNTable;
+    }
+
+    public LocalDate getBalanceDate() {
+        return balanceDate;
+    }
+
+    public void setBalanceDate(LocalDate balanceDate) {
+        this.balanceDate = balanceDate;
+    }
 
     public Collection<ForecastCurrencyBalance> getBalanceCurrencyTable() {
         return balanceCurrencyTable;
@@ -35,14 +71,6 @@ public class Forecast extends StandardEntity {
 
     public void setBalanceCurrencyTable(Collection<ForecastCurrencyBalance> balanceCurrencyTable) {
         this.balanceCurrencyTable = balanceCurrencyTable;
-    }
-
-    public Double getBalanceInBaseCurrency() {
-        return balanceInBaseCurrency;
-    }
-
-    public void setBalanceInBaseCurrency(Double balanceInBaseCurrency) {
-        this.balanceInBaseCurrency = balanceInBaseCurrency;
     }
 
     public Double getPorog() {

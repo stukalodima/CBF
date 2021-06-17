@@ -16,8 +16,7 @@
     <!--Application components-->
     <context-param>
         <param-name>appComponents</param-name>
-        <param-value>com.haulmont.cuba com.haulmont.addon.helium com.haulmont.addon.dashboard com.haulmont.charts
-            de.diedavids.cuba.userinbox</param-value>
+        <param-value>com.haulmont.cuba com.haulmont.addon.helium de.diedavids.cuba.userinbox</param-value>
     </context-param>
     <listener>
         <listener-class>com.vaadin.server.communication.JSR356WebsocketInitializer</listener-class>

@@ -1,0 +1,2 @@
+alter table UNTITLED_FORECAST alter column BALANCE_IN_BASE_CURRENCY rename to BALANCE_IN_BASE_CURRENCY__U01963 ^
+alter table UNTITLED_FORECAST add column BALANCE_DATE date ;

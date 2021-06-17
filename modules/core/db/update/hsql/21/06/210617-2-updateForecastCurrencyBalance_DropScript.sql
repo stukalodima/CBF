@@ -1,0 +1,1 @@
+alter table UNTITLED_FORECAST_CURRENCY_BALANCE drop column IN_SUMM3__U67217 cascade ;

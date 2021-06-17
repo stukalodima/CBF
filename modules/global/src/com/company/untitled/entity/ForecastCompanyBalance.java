@@ -5,13 +5,23 @@ import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-@Table(name = "UNTITLED_FORECAST_CURRENCY_BALANCE")
-@Entity(name = "untitled_ForecastCurrencyBalance")
-public class ForecastCurrencyBalance extends StandardEntity {
-    private static final long serialVersionUID = 5838031289318463073L;
+@Table(name = "UNTITLED_FORECAST_COMPANY_BALANCE")
+@Entity(name = "untitled_ForecastCompanyBalance")
+public class ForecastCompanyBalance extends StandardEntity {
+    private static final long serialVersionUID = -8032367488802083703L;
 
-    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open"})
+    @Lookup(type = LookupType.DROPDOWN, actions = "open")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COMPANY_ID")
+    @NotNull
+    private Company company;
+
+    @Column(name = "TYPE_CASH")
+    private Integer typeCash;
+
+    @Lookup(type = LookupType.DROPDOWN, actions = "open")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CURRENCY_ID")
     private Currency currency;
@@ -68,12 +78,44 @@ public class ForecastCurrencyBalance extends StandardEntity {
     @JoinColumn(name = "FORECAST_ID")
     private Forecast forecast;
 
-    public void setInSumm3(Double inSumm3) {
-        this.inSumm3 = inSumm3;
+    public Forecast getForecast() {
+        return forecast;
     }
 
-    public Double getInSumm3() {
-        return inSumm3;
+    public void setForecast(Forecast forecast) {
+        this.forecast = forecast;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public CashType getTypeCash() {
+        return typeCash == null ? null : CashType.fromId(typeCash);
+    }
+
+    public void setTypeCash(CashType typeCash) {
+        this.typeCash = typeCash == null ? null : typeCash.getId();
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public Double getForecastSumm5() {
@@ -82,6 +124,14 @@ public class ForecastCurrencyBalance extends StandardEntity {
 
     public void setForecastSumm5(Double forecastSumm5) {
         this.forecastSumm5 = forecastSumm5;
+    }
+
+    public void setOutSumm3(Double outSumm3) {
+        this.outSumm3 = outSumm3;
+    }
+
+    public Double getOutSumm3() {
+        return outSumm3;
     }
 
     public Double getForecastSumm4() {
@@ -132,14 +182,6 @@ public class ForecastCurrencyBalance extends StandardEntity {
         this.outSumm4 = outSumm4;
     }
 
-    public Double getOutSumm3() {
-        return outSumm3;
-    }
-
-    public void setOutSumm3(Double outSumm3) {
-        this.outSumm3 = outSumm3;
-    }
-
     public Double getOutSumm2() {
         return outSumm2;
     }
@@ -172,6 +214,14 @@ public class ForecastCurrencyBalance extends StandardEntity {
         this.inSumm4 = inSumm4;
     }
 
+    public Double getInSumm3() {
+        return inSumm3;
+    }
+
+    public void setInSumm3(Double inSumm3) {
+        this.inSumm3 = inSumm3;
+    }
+
     public Double getInSumm2() {
         return inSumm2;
     }
@@ -186,29 +236,5 @@ public class ForecastCurrencyBalance extends StandardEntity {
 
     public void setInSumm1(Double inSumm1) {
         this.inSumm1 = inSumm1;
-    }
-
-    public Forecast getForecast() {
-        return forecast;
-    }
-
-    public void setForecast(Forecast forecast) {
-        this.forecast = forecast;
-    }
-
-    public Double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
     }
 }

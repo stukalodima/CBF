@@ -66,7 +66,9 @@
                     <column id="typeCash" property="typeCash"/>
                     <column id="currency" property="currency">
                     </column>
-                    <column id="balance" property="balance" caption="msg://balance.caption"/>
+                    <column id="balance" property="balance" caption="msg://balance.caption">
+                        <aggregation type="SUM"/>
+                    </column>
 
                     <column id="inSumm1" property="inSumm1">
                         <aggregation type="SUM"/>
