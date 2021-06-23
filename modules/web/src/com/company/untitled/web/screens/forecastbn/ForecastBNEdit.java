@@ -1,26 +1,19 @@
 package com.company.untitled.web.screens.forecastbn;
 
 import com.company.untitled.entity.*;
-import com.haulmont.cuba.core.entity.KeyValueEntity;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.EntityStates;
 import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.Metadata;
-import com.haulmont.cuba.gui.Notifications;
-import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.components.DataGrid;
-import com.haulmont.cuba.gui.components.HasValue;
-import com.haulmont.cuba.gui.components.PickerField;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionPropertyContainer;
 import com.haulmont.cuba.gui.model.InstanceContainer;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.cuba.security.global.UserSession;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @UiController("untitled_ForecastBN.edit")
 @UiDescriptor("forecast-bn-edit.xml")
@@ -33,17 +26,43 @@ public class ForecastBNEdit extends StandardEditor<ForecastBN> {
     @Inject
     private CollectionPropertyContainer<ForecastBNDetail> forecastDetailDc;
     @Inject
-    private Notifications notifications;
-    @Inject
     private Metadata metadata;
     @Inject
     private InstanceContainer<ForecastBN> forecastBNDc;
     @Inject
     private DataManager dataManager;
+    @Inject
+    private ButtonsPanel buttonsPanel;
+    @Inject
+    private UserSession userSession;
+    @Inject
+    private EntityStates entityStates;
+    @Inject
+    private LookupPickerField<BusinessDirection> businessDirectionField;
+    @Inject
+    private DateField<LocalDate> balanceDateField;
+    @Inject
+    private CheckBox activeCheckBox;
 
     @Subscribe
     public void onInit(InitEvent event) {
         initHeader();
+    }
+
+    @Subscribe
+    public void onAfterShow(AfterShowEvent event) {
+        if (!entityStates.isNew(forecastBNDc.getItem())) {
+            if (userSession.getRoles().contains("system-full-access")) {
+                buttonsPanel.setEnabled(!forecastBNDc.getItem().getActive());
+                dataGrid.setEnabled(!forecastBNDc.getItem().getActive());
+                businessDirectionField.setEnabled(!forecastBNDc.getItem().getActive());
+                balanceDateField.setEnabled(!forecastBNDc.getItem().getActive());
+                activeCheckBox.setEnabled(!forecastBNDc.getItem().getActive());
+            }
+        }
+        else {
+            forecastBNDc.getItem().setActive(false);
+        }
     }
 
     private void initHeader() {
@@ -77,19 +96,19 @@ public class ForecastBNEdit extends StandardEditor<ForecastBN> {
 
     private void calcForecast(ForecastBNDetail element) {
         if (element.getBalance()!=null && element.getInSumm1()!= null && element.getOutSumm1()!=null) {
-            element.setForecastSumm1(element.getBalance() + element.getInSumm1() - element.getOutSumm1());
+            element.setForecastSumm1(element.getBalance() + element.getInSumm1() + element.getOutSumm1());
         }
         if (element.getForecastSumm1() != null && element.getInSumm2() != null && element.getOutSumm2() != null) {
-            element.setForecastSumm2(element.getForecastSumm1() + element.getInSumm2() - element.getOutSumm2());
+            element.setForecastSumm2(element.getForecastSumm1() + element.getInSumm2() + element.getOutSumm2());
         }
         if (element.getForecastSumm2()!=null && element.getInSumm3()!=null && element.getOutSumm3()!=null) {
-            element.setForecastSumm3(element.getForecastSumm2() + element.getInSumm3() - element.getOutSumm3());
+            element.setForecastSumm3(element.getForecastSumm2() + element.getInSumm3() + element.getOutSumm3());
         }
         if (element.getForecastSumm3()!=null && element.getInSumm4()!=null && element.getOutSumm4()!=null) {
-            element.setForecastSumm4(element.getForecastSumm3() + element.getInSumm4() - element.getOutSumm4());
+            element.setForecastSumm4(element.getForecastSumm3() + element.getInSumm4() + element.getOutSumm4());
         }
         if (element.getForecastSumm4()!=null && element.getInSumm5()!=null && element.getOutSumm5()!=null) {
-            element.setForecastSumm5(element.getForecastSumm4() + element.getInSumm5() - element.getOutSumm5());
+            element.setForecastSumm5(element.getForecastSumm4() + element.getInSumm5() + element.getOutSumm5());
         }
     }
 

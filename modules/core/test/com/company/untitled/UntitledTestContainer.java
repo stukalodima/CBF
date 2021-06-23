@@ -14,7 +14,8 @@ public class UntitledTestContainer extends TestContainer {
         appComponents = Arrays.asList(
                 "com.haulmont.cuba",
                 "com.haulmont.addon.helium",
-                "de.diedavids.cuba.userinbox");
+                "de.diedavids.cuba.userinbox",
+                "com.haulmont.charts");
         appPropertiesFiles = Arrays.asList(
                 // List the files defined in your web.xml
                 // in appPropertiesConfig context parameter of the core module

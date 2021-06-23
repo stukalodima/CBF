@@ -19,7 +19,7 @@ import java.util.Collection;
 public class ForecastBN extends StandardEntity {
     private static final long serialVersionUID = 2381900816465363785L;
 
-    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open"})
+    @Lookup(type = LookupType.DROPDOWN, actions = "open")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BUSINESS_DIRECTION_ID")
     @NotNull

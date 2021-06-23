@@ -12,5 +12,6 @@
         <class>com.company.untitled.entity.ForecastBNBalance</class>
         <class>com.company.untitled.entity.ForecastCompanyBalance</class>
         <class>com.company.untitled.entity.CurrencyRate</class>
+        <class>com.company.untitled.entity.ForecastCompany</class>
     </persistence-unit>
 </persistence>

@@ -33,12 +33,19 @@ cuba {
         version = '0.1'
         isSnapshot = true
     }
+    tomcat {
+        port = '7070'
+        ajpPort = '7009'
+        shutdownPort = '7005'
+        debugPort = '7777'
+    }
 }
 
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
     appComponent('com.haulmont.addon.helium:helium-global:0.3.1')
     appComponent('de.diedavids.cuba.userinbox:user-inbox-global:0.8.0')
+    appComponent("com.haulmont.charts:charts-global:$cubaVersion")
 }
 
 def hsql = 'org.hsqldb:hsqldb:2.4.1'
@@ -210,3 +217,9 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
 }
 restart.finalizedBy start
 
+task buildUberJar(type: CubaUberJarBuilding) {
+    webPort = 7070
+    logbackConfigurationFile = 'etc/uber-jar-logback.xml'
+    singleJar = true
+    appProperties = ['cuba.automaticDatabaseUpdate': true]
+}

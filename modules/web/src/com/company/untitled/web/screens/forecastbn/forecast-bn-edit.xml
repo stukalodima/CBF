@@ -45,7 +45,8 @@
             </column>
         </form>
 
-        <groupBox id="forecastDetailBox" caption="msg://com.company.untitled.entity/ForecastBN.forecastDetail">
+        <groupBox id="forecastDetailBox" caption="msg://com.company.untitled.entity/ForecastBN.forecastDetail"
+                  expand="dataGrid">
             <dataGrid id="dataGrid" dataContainer="forecastDetailDc" editorEnabled="true" frozenColumnCount="4" aggregatable="true"
                       width="100%" reorderingAllowed="false" sortable="false" settingsEnabled="false"
                       textSelectionEnabled="true" columnsCollapsingAllowed="false">

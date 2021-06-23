@@ -21,7 +21,7 @@ public class Company extends StandardEntity {
     @NotNull
     private String edrpou;
 
-    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
+    @Lookup(type = LookupType.DROPDOWN, actions = {"open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BUSINESS_DIRECTION_ID")
     @NotNull

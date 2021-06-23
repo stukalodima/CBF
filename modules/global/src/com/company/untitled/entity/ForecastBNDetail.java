@@ -21,7 +21,7 @@ public class ForecastBNDetail extends StandardEntity {
     @Column(name = "TYPE_CASH")
     private Integer typeCash;
 
-    @Lookup(type = LookupType.DROPDOWN, actions = {"open"})
+    @Lookup(type = LookupType.DROPDOWN, actions = "open")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CURRENCY_ID")
     private Currency currency;

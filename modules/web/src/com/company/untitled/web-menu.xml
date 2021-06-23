@@ -9,6 +9,7 @@
     <menu id="Documents" caption="mainMsg://menu_config.Documents" icon="font-icon:SUITCASE">
         <item screen="untitled_ForecastBN.browse" caption="mainMsg://menu_config.untitled_ForecastBN.browse"/>
         <item screen="untitled_Forecast.browse" caption="mainMsg://menu_config.untitled_Forecast.browse"/>
+        <item screen="untitled_ForecastCompanyScreen" caption="mainMsg://menu_config.untitled_ForecastCompanyScreen"/>
     </menu>
     <menu id="administration" icon="GEARS">
         <item id="sec$User.browse"/>

@@ -1,10 +1,7 @@
 package com.company.untitled.web.screens.forecast;
 
 import com.company.untitled.entity.*;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.LoadContext;
-import com.haulmont.cuba.core.global.Metadata;
-import com.haulmont.cuba.gui.components.Action;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.components.DataGrid;
 import com.haulmont.cuba.gui.components.HasValue;
 import com.haulmont.cuba.gui.model.CollectionPropertyContainer;
@@ -20,6 +17,16 @@ import java.util.List;
 @EditedEntityContainer("forecastDc")
 @LoadDataBeforeShow
 public class ForecastEdit extends StandardEditor<Forecast> {
+    @Inject
+    private EntityStates entityStates;
+
+    @Subscribe
+    public void onAfterShow(AfterShowEvent event) {
+        if (entityStates.isNew(forecastDc.getItem())) {
+            forecastDc.getItem().setPorog(55000000.);
+            dataManager.commit(forecastDc.getItem());
+        }
+    }
 
     @Inject
     private DataGrid<ForecastBNBalance> balanceBNTableTable;
@@ -39,6 +46,8 @@ public class ForecastEdit extends StandardEditor<Forecast> {
     private CollectionPropertyContainer<ForecastBNBalance> balanceBNTableDc;
     @Inject
     private CollectionPropertyContainer<ForecastCompanyBalance> balanceCompanyTableDc;
+
+    private CommitContext commitContext;
 
     @Subscribe
     public void onInit(InitEvent event) {
@@ -73,6 +82,16 @@ public class ForecastEdit extends StandardEditor<Forecast> {
 
     @Subscribe("balanceDateField")
     public void onBalanceDateFieldValueChange(HasValue.ValueChangeEvent<LocalDate> event) {
+
+        for (ForecastCurrencyBalance delForecastCurrencyBalance : balanceCurrencyTableDc.getMutableItems()) {
+            commitContext.addInstanceToRemove(delForecastCurrencyBalance);
+        }
+
+        for (ForecastCompanyBalance delForecastCompanyBalance : balanceCompanyTableDc.getMutableItems()) {
+            commitContext.addInstanceToRemove(delForecastCompanyBalance);
+        }
+
+        balanceCompanyTableDc.getMutableItems().clear();
         balanceCurrencyTableDc.getMutableItems().clear();
 
         LoadContext<Currency> currencyLoadContext = LoadContext.create(Currency.class)
@@ -80,6 +99,7 @@ public class ForecastEdit extends StandardEditor<Forecast> {
                 .setView("_local");
 
         List<Currency> currencyList = dataManager.loadList(currencyLoadContext);
+        commitContext = new CommitContext();
 
         for(Currency currency: currencyList){
             LoadContext<ForecastBNDetail> forecastBNDetailLoadContext = LoadContext.create(ForecastBNDetail.class)
@@ -91,6 +111,7 @@ public class ForecastEdit extends StandardEditor<Forecast> {
 
             ForecastCurrencyBalance forecastCurrencyBalance = metadata.create(ForecastCurrencyBalance.class);
             forecastCurrencyBalance.setCurrency(currency);
+            forecastCurrencyBalance.setForecast(forecastDc.getItem());
 
             double balance = 0.;
             double ForecastSumm1 = 0.;
@@ -152,11 +173,17 @@ public class ForecastEdit extends StandardEditor<Forecast> {
 
             balanceCurrencyTableDc.getMutableItems().add(forecastCurrencyBalance);
 
+            commitContext.addInstanceToCommit(forecastCurrencyBalance);
+
         }
 
         //BN
 
-        balanceBNTableDc.getMutableItems().clear();
+        for (ForecastBNBalance delForecastBNBalance : balanceBNTableDc.getMutableItems()) {
+            commitContext.addInstanceToRemove(delForecastBNBalance);
+        }
+
+        balanceCompanyTableDc.getMutableItems().clear();
 
         LoadContext<BusinessDirection> businessDirectionLoadContext = LoadContext.create(BusinessDirection.class)
                 .setQuery(LoadContext.createQuery("select e from untitled_BusinessDirection e"))
@@ -168,12 +195,13 @@ public class ForecastEdit extends StandardEditor<Forecast> {
             LoadContext<ForecastBNDetail> forecastBNDetailLoadContext = LoadContext.create(ForecastBNDetail.class)
                     .setQuery(LoadContext.createQuery("select e from untitled_ForecastBNDetail e where e.forecastBN.businessDirection = :businessDirection")
                             .setParameter("businessDirection", businessDirection))
-                    .setView("_local");
+                    .setView("forecastBNDetail-view");
 
             List<ForecastBNDetail> forecastBNDetails = dataManager.loadList(forecastBNDetailLoadContext);
 
             ForecastBNBalance forecastBNBalance = metadata.create(ForecastBNBalance.class);
             forecastBNBalance.setBusinessDirection(businessDirection);
+            forecastBNBalance.setForecast(forecastDc.getItem());
 
             double balance = 0.;
             double ForecastSumm1 = 0.;
@@ -194,6 +222,31 @@ public class ForecastEdit extends StandardEditor<Forecast> {
 
 
             for (ForecastBNDetail detail : forecastBNDetails){
+                ForecastCompanyBalance forecastCompanyBalance = metadata.create(ForecastCompanyBalance.class);
+                forecastCompanyBalance.setBalance(detail.getBalance());
+                forecastCompanyBalance.setCompany(detail.getCompany());
+                forecastCompanyBalance.setCurrency(detail.getCurrency());
+                forecastCompanyBalance.setForecastSumm1(detail.getForecastSumm1());
+                forecastCompanyBalance.setForecastSumm2(detail.getForecastSumm2());
+                forecastCompanyBalance.setForecastSumm3(detail.getForecastSumm3());
+                forecastCompanyBalance.setForecastSumm4(detail.getForecastSumm4());
+                forecastCompanyBalance.setForecastSumm5(detail.getForecastSumm5());
+                forecastCompanyBalance.setInSumm1(detail.getInSumm1());
+                forecastCompanyBalance.setInSumm2(detail.getInSumm2());
+                forecastCompanyBalance.setInSumm3(detail.getInSumm3());
+                forecastCompanyBalance.setInSumm4(detail.getInSumm4());
+                forecastCompanyBalance.setInSumm5(detail.getInSumm5());
+
+                forecastCompanyBalance.setOutSumm1(detail.getOutSumm1());
+                forecastCompanyBalance.setOutSumm2(detail.getOutSumm2());
+                forecastCompanyBalance.setOutSumm3(detail.getOutSumm3());
+                forecastCompanyBalance.setOutSumm4(detail.getOutSumm4());
+                forecastCompanyBalance.setOutSumm5(detail.getOutSumm5());
+
+                forecastCompanyBalance.setForecast(forecastDc.getItem());
+
+                commitContext.addInstanceToCommit(forecastCompanyBalance);
+
                 balance += detail.getBalance();
                 ForecastSumm1 += detail.getForecastSumm1();
                 ForecastSumm2 += detail.getForecastSumm2();
@@ -234,28 +287,11 @@ public class ForecastEdit extends StandardEditor<Forecast> {
             forecastBNBalance.setOutSumm5(OutSumm5);
 
             balanceBNTableDc.getMutableItems().add(forecastBNBalance);
+            commitContext.addInstanceToCommit(forecastBNBalance);
 
         }
 
-//
-//        BusinessDirection businessDirectionId = forecastBNDc.getItem().getBusinessDirection();
-//        LoadContext<Company> loadContext = LoadContext.create(Company.class)
-//                .setQuery(LoadContext.createQuery("select e from untitled_Company e" +
-//                        " where e.businessDirection = :businessDirection")
-//                        .setParameter("businessDirection", businessDirectionId))
-//                .setView("_local");
-//
-//        List<Company> companyList = dataManager.loadList(loadContext);
-//
-//        for(Company item:companyList){
-//            addForecastDetailItem(item);
-//        }
-    }
-
-    @Subscribe("balanceCurrencyTableTable.create")
-    public void onBalanceCurrencyTableTableCreate(Action.ActionPerformedEvent event) {
-        ForecastCurrencyBalance forecastCurrencyBalance = metadata.create(ForecastCurrencyBalance.class);
-        balanceCurrencyTableDc.getMutableItems().add(forecastCurrencyBalance);
-        balanceCurrencyTableTable.edit(forecastCurrencyBalance);
+        dataManager.commit(commitContext);
+        dataManager.reload(forecastDc.getItem(), "_local");
     }
 }

@@ -2,9 +2,7 @@ package com.company.untitled.entity;
 
 import com.haulmont.cuba.core.entity.StandardEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -18,7 +16,20 @@ public class CurrencyRate extends StandardEntity {
     private LocalDate onDate;
 
     @Column(name = "VALUE_")
+    @NotNull
     private Double value;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "CURRENCY_ID")
+    private Currency currency;
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
     public Double getValue() {
         return value;
