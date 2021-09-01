@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="CashBalanceForecast" transaction-type="RESOURCE_LOCAL">
+
+        <class>com.company.itk.entity.Company</class>
+        <class>com.company.itk.entity.BusinessDirection</class>
+        <class>com.company.itk.entity.Currency</class>
+        <class>com.company.itk.entity.ForecastBN</class>
+        <class>com.company.itk.entity.ForecastBNDetail</class>
+        <class>com.company.itk.entity.Forecast</class>
+        <class>com.company.itk.entity.ForecastCurrencyBalance</class>
+        <class>com.company.itk.entity.ForecastBNBalance</class>
+        <class>com.company.itk.entity.ForecastCompanyBalance</class>
+        <class>com.company.itk.entity.CurrencyRate</class>
+        <class>com.company.itk.entity.ForecastCompany</class>
+    </persistence-unit>
+</persistence>

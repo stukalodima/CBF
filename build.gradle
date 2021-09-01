@@ -1,6 +1,5 @@
-
 buildscript {
-    ext.cubaVersion = '7.2.13'
+    ext.cubaVersion = '7.2.15'
     repositories {
         maven {
             url 'https://repo.cuba-platform.com/content/groups/work'
@@ -9,7 +8,7 @@ buildscript {
                 password(rootProject.hasProperty('repoPass') ? rootProject['repoPass'] : 'cuba123')
             }
         }
-        
+
     }
     dependencies {
         classpath "com.haulmont.gradle:cuba-plugin:$cubaVersion"
@@ -34,21 +33,17 @@ cuba {
         isSnapshot = true
     }
     tomcat {
-        port = '7070'
-        ajpPort = '7009'
-        shutdownPort = '7005'
-        debugPort = '7777'
     }
 }
 
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
-    appComponent('com.haulmont.addon.helium:helium-global:0.3.1')
     appComponent('de.diedavids.cuba.userinbox:user-inbox-global:0.8.0')
     appComponent("com.haulmont.charts:charts-global:$cubaVersion")
+    appComponent('com.haulmont.addon.helium:helium-global:0.4.0')
 }
 
-def hsql = 'org.hsqldb:hsqldb:2.4.1'
+def postgres = 'org.postgresql:postgresql:42.2.9'
 
 configure([globalModule, coreModule, webModule, webToolkitModule]) {
     apply(plugin: 'java')
@@ -56,10 +51,10 @@ configure([globalModule, coreModule, webModule, webToolkitModule]) {
     apply(plugin: 'cuba')
 
     dependencies {
-            testCompile('org.junit.jupiter:junit-jupiter-api:5.5.2')
-            testCompile('org.junit.jupiter:junit-jupiter-engine:5.5.2')
-            testCompile('org.junit.vintage:junit-vintage-engine:5.5.2')  
-        }
+        testCompile('org.junit.jupiter:junit-jupiter-api:5.5.2')
+        testCompile('org.junit.jupiter:junit-jupiter-engine:5.5.2')
+        testCompile('org.junit.vintage:junit-vintage-engine:5.5.2')
+    }
 
     task sourceJar(type: Jar) {
         from file('src')
@@ -68,7 +63,7 @@ configure([globalModule, coreModule, webModule, webToolkitModule]) {
 
     artifacts {
         archives sourceJar
-    } 
+    }
     test {
         useJUnitPlatform()
     }
@@ -100,8 +95,8 @@ configure(coreModule) {
     dependencies {
         compile(globalModule)
         compileOnly(servletApi)
-        jdbc(hsql)
-        testRuntime(hsql)
+        jdbc(postgres)
+        testRuntime(postgres)
     }
 
     task cleanConf(description: 'Cleans up conf directory', type: Delete) {
@@ -221,5 +216,12 @@ task buildUberJar(type: CubaUberJarBuilding) {
     webPort = 7070
     logbackConfigurationFile = 'etc/uber-jar-logback.xml'
     singleJar = true
-    appProperties = ['cuba.automaticDatabaseUpdate': true]
+    appProperties = ['cuba.automaticDatabaseUpdate': true,
+                     'cuba.dataSource.username'    : 'postgres',
+                     'cuba.dataSource.password'    : 'postgres',
+                     'cuba.dataSource.dbName'      : 'untitled-683079',
+                     'cuba.dataSource.host'        : 'localhost',
+                     'cuba.dataSource.port'        : '',
+                     'cuba.dataSourceProvider'     : 'application']
+    webJettyConfPath = 'jetty.xml'
 }
